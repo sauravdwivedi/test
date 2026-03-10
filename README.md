@@ -4,6 +4,8 @@
 
 Backend provides CRUD for adding, searching and sorting notes. Frontend executes adding, editing, deleting, and summary generation for notes.
 
+<img src=Swagger.PNG alt="Swagger UI">
+
 ### Execution
 
 #### Run Postgres instance on docker
@@ -64,4 +66,6 @@ dotnet run
 cd frontend
 ng serve
 ```
+
+- http://localhost:4200
 
