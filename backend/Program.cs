@@ -22,18 +22,19 @@ builder.Services.AddDbContext<NotesDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // ── Hugging Face AI Client ─────────────────────────────────────────────────────
-builder.Services.Configure<HuggingFaceOptions>(
-    builder.Configuration.GetSection("HuggingFace"));
-
 builder.Services.AddHttpClient("HuggingFace", client =>
 {
-    client.BaseAddress = new Uri("https://api-inference.huggingface.co/");
+    client.BaseAddress = new Uri("https://router.huggingface.co/hf-inference/");
+
     var token = builder.Configuration["HuggingFace:ApiToken"];
-    if (!string.IsNullOrEmpty(token))
+    if (!string.IsNullOrWhiteSpace(token))
     {
         client.DefaultRequestHeaders.Authorization =
             new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
     }
+
+    client.DefaultRequestHeaders.Accept.Add(
+        new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 });
 
 builder.Services.AddScoped<AiSummarizationService>();

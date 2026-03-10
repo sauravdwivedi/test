@@ -11,7 +11,11 @@ Backend provides CRUD for adding, searching and sorting notes. Frontend executes
 ```bash
 docker run -d -p 5432:5432 --name pg-local -e POSTGRES_PASSWORD=postgres postgres:16
 ```
-#### Run backend
+#### Run backend service
+
+```bash
+cd backend
+```
 ##### Add migration if any changes in schema
 ```bash
 dotnet ef migrations add MigrationMessage
