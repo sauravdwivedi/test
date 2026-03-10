@@ -17,7 +17,7 @@ public static class NoteEndpoints
             string? sort = "createdAt",
             string? order = "desc") =>
         {
-            IQueryable<Note> query = db.Notes;
+            IQueryable<NoteResponseSchema> query = db.Notes;
 
             if (!string.IsNullOrWhiteSpace(search))
             {
@@ -48,26 +48,47 @@ public static class NoteEndpoints
 
         // GET single
         group.MapGet("/{id:guid}", async (NotesDbContext db, Guid id) =>
-            await db.Notes.FindAsync(id) is Note note
+            await db.Notes.FindAsync(id) is NoteResponseSchema note
                 ? Results.Ok(note)
                 : Results.NotFound())
         .WithName("GetNote");
 
         // POST - create
-        group.MapPost("/", async (NotesDbContext db, Note note) =>
+        group.MapPost("/", async (NotesDbContext db, NoteRequestSchema request) =>
         {
-            note.CreatedAt = DateTime.UtcNow;
-            note.UpdatedAt = DateTime.UtcNow;
+            var note = new NoteResponseSchema
+            {
+                Title   = request.Title,
+                Content = request.Content,
+                Summary = request.Summary,
+                Tags    = request.Tags,
+            };
 
             db.Notes.Add(note);
             await db.SaveChangesAsync();
 
-            return Results.CreatedAtRoute("GetNote", new { id = note.Id }, note);
+            var response = new NoteResponseSchema
+            {
+                Id        = note.Id,
+                Title     = note.Title,
+                Content   = note.Content,
+                Summary   = note.Summary,
+                Tags      = note.Tags,
+                CreatedAt = note.CreatedAt,
+                UpdatedAt = note.UpdatedAt
+            };
+
+            return Results.CreatedAtRoute(
+                "GetNote",
+                new { id = note.Id },
+                response
+            );
         })
-        .WithName("CreateNote");
+        .WithName("CreateNote")
+        .Produces<NoteResponseSchema>(StatusCodes.Status201Created);
 
         // PUT - update
-        group.MapPut("/{id:guid}", async (NotesDbContext db, Guid id, Note input) =>
+        group.MapPut("/{id:guid}", async (NotesDbContext db, Guid id, NoteRequestSchema input) =>
         {
             var note = await db.Notes.FindAsync(id);
             if (note is null) return Results.NotFound();

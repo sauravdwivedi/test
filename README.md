@@ -1,12 +1,28 @@
-# test
+# Fullstack application with .NET backend and Angular frontend
 
+## Project description
+
+Backend provides CRUD for adding, searching and sorting notes. Frontend executes adding, editing, and summary generation for notes.
+
+### Execution
+
+#### Run Postgres instance on docker
+
+```bash
 docker run -d -p 5432:5432 --name pg-local -e POSTGRES_PASSWORD=postgres postgres:16
+```
+#### Run backend
 
-# 3. Apply migrations to create tables in the database
+```bash
+// Add migration if any changes in schema
+dotnet ef migrations add MigrationMessage
+// Apply migrations to create database and tables
 dotnet ef database update
-
+// trust local certificate
 dotnet dev-certs https --trust
-
 dotnet run
+```
 
-dotnet run --urls "http://localhost:5100;https://localhost:5101" --no-https
+### Swagger UI
+
+[-] http://localhost:5000/swagger/index.html
