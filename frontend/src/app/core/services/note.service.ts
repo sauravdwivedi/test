@@ -8,7 +8,8 @@ import {
     distinctUntilChanged,
     finalize,
     map,
-    switchMap
+    switchMap,
+    tap
 } from 'rxjs/operators';
 
 import { Note, NoteCreate, NoteUpdate } from '../models/note.model';
@@ -24,7 +25,7 @@ export class NoteService {
     loading = signal(false);
     error = signal<string | null>(null);
 
-    // Reactive notes list with search
+    // Reactive notes list
     notes = toSignal(
         this.searchTerm$.pipe(
             debounceTime(300),
@@ -36,6 +37,10 @@ export class NoteService {
 
     setSearch(term: string) {
         this.searchTerm$.next(term);
+    }
+
+    private refreshNotes() {
+        this.searchTerm$.next(this.searchTerm$.value);
     }
 
     private getNotes(
@@ -63,6 +68,7 @@ export class NoteService {
         this.loading.set(true);
 
         return this.http.post<Note>(this.apiUrl, note).pipe(
+            tap(() => this.refreshNotes()),
             finalize(() => this.loading.set(false))
         );
     }
@@ -71,6 +77,7 @@ export class NoteService {
         this.loading.set(true);
 
         return this.http.put<Note>(`${this.apiUrl}/${note.id}`, note).pipe(
+            tap(() => this.refreshNotes()),
             finalize(() => this.loading.set(false))
         );
     }
@@ -79,6 +86,7 @@ export class NoteService {
         this.loading.set(true);
 
         return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
+            tap(() => this.refreshNotes()),
             finalize(() => this.loading.set(false))
         );
     }
@@ -87,6 +95,7 @@ export class NoteService {
         this.loading.set(true);
 
         return this.http.post<Note>(`${this.apiUrl}/${id}/summarize`, {}).pipe(
+            tap(() => this.refreshNotes()),
             finalize(() => this.loading.set(false))
         );
     }
