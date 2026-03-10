@@ -4,8 +4,6 @@ public class NoteRequestSchema
 {
     public string Title { get; set; } = string.Empty;
     public string Content { get; set; } = string.Empty;
-    public string? Summary { get; set; }
-    public string[]? Tags { get; set; }   // e.g. ["#todo", "#urgent"]
 }
 
 public class NoteResponseSchema

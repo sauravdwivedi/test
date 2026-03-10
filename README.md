@@ -2,7 +2,7 @@
 
 ## Project description
 
-Backend provides CRUD for adding, searching and sorting notes. Frontend executes adding, editing, and summary generation for notes.
+Backend provides CRUD for adding, searching and sorting notes. Frontend executes adding, editing, deleting, and summary generation for notes.
 
 ### Execution
 

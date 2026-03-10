@@ -60,8 +60,6 @@ public static class NoteEndpoints
             {
                 Title   = request.Title,
                 Content = request.Content,
-                Summary = request.Summary,
-                Tags    = request.Tags,
             };
 
             db.Notes.Add(note);
@@ -72,8 +70,6 @@ public static class NoteEndpoints
                 Id        = note.Id,
                 Title     = note.Title,
                 Content   = note.Content,
-                Summary   = note.Summary,
-                Tags      = note.Tags,
                 CreatedAt = note.CreatedAt,
                 UpdatedAt = note.UpdatedAt
             };
@@ -95,8 +91,6 @@ public static class NoteEndpoints
 
             note.Title = input.Title;
             note.Content = input.Content;
-            note.Summary = input.Summary;
-            note.Tags = input.Tags;
             note.UpdatedAt = DateTime.UtcNow;
 
             await db.SaveChangesAsync();
