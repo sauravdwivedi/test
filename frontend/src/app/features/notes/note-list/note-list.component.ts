@@ -31,7 +31,6 @@ export class NoteListComponent {
         return note.id;
     }
 
-    // Accept optional sort value
     onSearch(sortValue?: string) {
         const sort = sortValue ?? '';
         const [sortField, sortOrder] = sort.split('_');
