@@ -24,12 +24,22 @@ export class NoteListComponent {
     error = this.noteService.error;
 
     constructor() {
-        // Initial load
-        this.noteService.setSearch('');
+        this.noteService.loadNotes();
     }
 
-    onSearch() {
-        this.noteService.setSearch(this.searchTerm());
+    trackById(index: number, note: Note) {
+        return note.id;
+    }
+
+    // Accept optional sort value
+    onSearch(sortValue?: string) {
+        const sort = sortValue ?? '';
+        const [sortField, sortOrder] = sort.split('_');
+        this.noteService.loadNotes(
+            this.searchTerm(),
+            sortField || 'createdAt',
+            (sortOrder as 'asc' | 'desc') || 'desc'
+        );
     }
 
     openCreate() {
@@ -49,11 +59,10 @@ export class NoteListComponent {
 
     onSaved() {
         this.closeForm();
-        // Refresh list
-        this.noteService.setSearch(this.searchTerm());
+        this.noteService.loadNotes(this.searchTerm());
     }
 
     onDeleted() {
-        this.noteService.setSearch(this.searchTerm());
+        this.noteService.loadNotes(this.searchTerm());
     }
 }

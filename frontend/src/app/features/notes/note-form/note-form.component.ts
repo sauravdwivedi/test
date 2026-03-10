@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, input, output, signal } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Note } from '../../../core/models/note.model';
 import { NoteService } from '../../../core/services/note.service';
@@ -11,9 +11,10 @@ import { NoteService } from '../../../core/services/note.service';
   template: `...` // keep your existing template
 })
 export class NoteFormComponent {
-  note = input<Note | null>(null);
-  saved = output<void>();
-  cancel = output<void>();
+
+  @Input() note: Note | null = null;
+  @Output() saved = new EventEmitter<void>();
+  @Output() cancel = new EventEmitter<void>();
 
   private fb = inject(FormBuilder);
   private noteService = inject(NoteService);
@@ -26,11 +27,10 @@ export class NoteFormComponent {
   });
 
   ngOnInit() {
-    const currentNote = this.note();
-    if (currentNote) {
+    if (this.note) {
       this.form.patchValue({
-        title: currentNote.title,
-        content: currentNote.content
+        title: this.note.title,
+        content: this.note.content
       });
     }
   }
@@ -40,11 +40,11 @@ export class NoteFormComponent {
 
     this.loading.set(true);
 
-    const value = this.form.getRawValue(); // nonNullable group → no nulls
+    const value = this.form.getRawValue(); // nonNullable → values are never null
 
-    const obs = this.note()
+    const obs = this.note
       ? this.noteService.updateNote({
-        id: this.note()!.id,
+        id: this.note.id,
         title: value.title,
         content: value.content
       })
@@ -64,5 +64,9 @@ export class NoteFormComponent {
         alert('Error saving note');
       }
     });
+  }
+
+  onCancel() {
+    this.cancel.emit();
   }
 }
