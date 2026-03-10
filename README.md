@@ -12,17 +12,23 @@ Backend provides CRUD for adding, searching and sorting notes. Frontend executes
 docker run -d -p 5432:5432 --name pg-local -e POSTGRES_PASSWORD=postgres postgres:16
 ```
 #### Run backend
-
+##### Add migration if any changes in schema
 ```bash
-// Add migration if any changes in schema
 dotnet ef migrations add MigrationMessage
-// Apply migrations to create database and tables
+```
+##### Apply migrations to create database and tables
+```bash
 dotnet ef database update
-// trust local certificate
+```
+##### Trust local certificates
+```bash
 dotnet dev-certs https --trust
+```
+##### Run backend service
+```bash
 dotnet run
 ```
 
 ### Swagger UI
 
-[-] http://localhost:5000/swagger/index.html
+- http://localhost:5000/swagger/index.html
