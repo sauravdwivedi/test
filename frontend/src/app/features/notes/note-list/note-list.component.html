@@ -1,0 +1,55 @@
+<div class="min-h-screen bg-gray-50 p-6">
+    <div class="max-w-5xl mx-auto">
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-800">My Notes</h1>
+            <button (click)="openCreate()"
+                class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                + New Note
+            </button>
+        </div>
+
+        <!-- Search & Sort -->
+        <div class="flex flex-col sm:flex-row gap-4 mb-6">
+            <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="onSearch()" placeholder="Search notes..."
+                class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+
+            <select (change)="noteService.setSearch(searchTerm());"
+                class="px-4 py-2 border border-gray-300 rounded-lg bg-white">
+                <option value="">Sort by...</option>
+                <option value="createdAt_desc">Newest first</option>
+                <option value="createdAt_asc">Oldest first</option>
+                <option value="title_asc">Title A-Z</option>
+                <option value="title_desc">Title Z-A</option>
+            </select>
+        </div>
+
+        @if (loading()) {
+        <div class="text-center py-12">
+            <p class="text-gray-500">Loading notes...</p>
+        </div>
+        } @else if (error()) {
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+            {{ error() }}
+        </div>
+        } @else if (notes().length === 0) {
+        <div class="text-center py-12 text-gray-500">
+            No notes found. Create your first note!
+        </div>
+        } @else {
+        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            @for (note of notes(); track note.id) {
+            <app-note-card [note]="note" (edit)="openEdit($event)" (delete)="onDeleted()" />
+            }
+        </div>
+        }
+    </div>
+
+    <!-- Form Modal -->
+    @if (showForm()) {
+    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
+            <app-note-form [note]="selectedNote()" (saved)="onSaved()" (cancel)="closeForm()" />
+        </div>
+    </div>
+    }
+</div>

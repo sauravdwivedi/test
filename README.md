@@ -36,3 +36,11 @@ dotnet run
 ### Swagger UI
 
 - http://localhost:5000/swagger/index.html
+
+#### Run frontend
+
+```bash
+cd frontend
+ng serve
+```
+
