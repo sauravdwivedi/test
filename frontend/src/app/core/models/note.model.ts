@@ -7,6 +7,9 @@ export interface Note {
     createdAt: string;
     updatedAt: string;
 }
+export interface NoteCreate {
+    title: string;
+    content: string;
+}
 
-export type NoteCreate = Omit<Note, 'id' | 'createdAt' | 'updatedAt'>;
 export type NoteUpdate = Partial<NoteCreate> & { id: string };
