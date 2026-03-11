@@ -6,6 +6,37 @@ Backend provides CRUD for adding, searching and sorting notes. Frontend executes
 
 <img src=Swagger.PNG alt="Swagger UI">
 
+### Architecture
+
+```mermaid
+flowchart LR
+
+    User[User Browser]
+
+    subgraph Frontend
+        Angular[Angular App]
+    end
+
+    subgraph Backend
+        API[ASP.NET Core API]
+        AIService[AI Service]
+        OTel[OpenTelemetry Tracing]
+    end
+
+    subgraph External
+        HF[HuggingFace Inference API]
+    end
+
+    User --> Angular
+    Angular -->|HTTP API Calls| API
+
+    API --> AIService
+    AIService -->|HTTP Request| HF
+
+    API --> OTel
+    AIService --> OTel
+```
+
 ### Execution
 
 #### Run Postgres instance on docker
