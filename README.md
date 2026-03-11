@@ -2,7 +2,7 @@
 
 ## Project description
 
-Backend provides CRUD for adding, searching and sorting notes. Frontend executes adding, editing, deleting, and summary generation for notes.
+It is a fullstack application to create notes. Backend provides CRUD for creating, updating, deleting, generating summary and tags, and searching and sorting notes. Frontend executes creating, editing, deleting, and summary generation for notes.
 
 <img src=Swagger.PNG alt="Swagger UI">
 
