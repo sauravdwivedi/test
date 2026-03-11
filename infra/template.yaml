@@ -1,0 +1,40 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Notes application infrastructure
+
+Resources:
+
+  NotesApi:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Name: NotesApi
+
+  NotesLambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: NotesBackend
+      Runtime: dotnet8
+      Handler: NotesService
+      Role: arn:aws:iam::123456789012:role/lambda-role
+      Code:
+        S3Bucket: example-bucket
+        S3Key: backend.zip
+      Environment:
+        Variables:
+          HUGGINGFACE_TOKEN: ${HUGGINGFACE_TOKEN}
+
+  FrontendBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: notes-frontend-bucket
+      WebsiteConfiguration:
+        IndexDocument: index.html
+
+Outputs:
+
+  ApiUrl:
+    Description: API Gateway endpoint
+    Value: !Sub "https://${NotesApi}.execute-api.${AWS::Region}.amazonaws.com"
+
+  FrontendURL:
+    Description: S3 website URL
+    Value: !GetAtt FrontendBucket.WebsiteURL

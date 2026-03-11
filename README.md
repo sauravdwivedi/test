@@ -6,7 +6,7 @@ Backend provides CRUD for adding, searching and sorting notes. Frontend executes
 
 <img src=Swagger.PNG alt="Swagger UI">
 
-### Architecture
+## Architecture
 
 ```mermaid
 flowchart LR
@@ -37,16 +37,16 @@ flowchart LR
     AIService --> OTel
 ```
 
-### Execution
+## Execution
 
-#### Run Postgres instance on docker
+### Run Postgres instance on docker
 
 ```bash
 docker run -d -p 5432:5432 --name pg-local -e POSTGRES_PASSWORD=postgres postgres:16
 ```
 
 
-#### Hugging Face API Token
+### Hugging Face API Token
 
 To use Hugging Face models in this project, you need an **API token**. Follow these steps to create one:
 
@@ -68,34 +68,34 @@ To use Hugging Face models in this project, you need an **API token**. Follow th
 export HUGGINGFACE_TOKEN=your_token_here
 ```
 
-#### Run backend service
+### Run backend service
 
 ```bash
 cd backend
 ```
 
-##### Add migration if any changes in schema
+#### Add migration if any changes in schema
 ```bash
 dotnet ef migrations add MigrationMessage
 ```
-##### Apply migrations to create database and tables
+#### Apply migrations to create database and tables
 ```bash
 dotnet ef database update
 ```
-##### Trust local certificates
+#### Trust local certificates
 ```bash
 dotnet dev-certs https --trust
 ```
-##### Run backend service
+#### Run backend service
 ```bash
 dotnet run
 ```
 
-##### Swagger UI
+#### Swagger UI
 
 - http://localhost:5000/swagger/index.html
 
-#### Run frontend
+### Run frontend
 
 ```bash
 cd frontend
@@ -103,4 +103,17 @@ ng serve
 ```
 
 - http://localhost:4200
+
+### Infrastructure
+
+The infrastructure is defined using AWS CloudFormation.
+
+Services used:
+
+- AWS Lambda – runs the ASP.NET backend
+- API Gateway – exposes the REST API
+- Amazon S3 – hosts the Angular frontend
+- CloudWatch – logging and monitoring
+
+See `infra/template.yaml` for the full template.
 
