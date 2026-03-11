@@ -7,6 +7,9 @@ using OpenTelemetry.Trace;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add environment variables
+builder.Configuration.AddEnvironmentVariables();
+
 // ── OpenTelemetry ───────────────────────────────────────────────────────────────
 builder.Services.AddOpenTelemetry()
     .ConfigureResource(resource => resource.AddService("NotesService"))
@@ -26,7 +29,7 @@ builder.Services.AddHttpClient("HuggingFace", client =>
 {
     client.BaseAddress = new Uri("https://router.huggingface.co/hf-inference/");
 
-    var token = builder.Configuration["HuggingFace:ApiToken"];
+    var token = builder.Configuration["HUGGINGFACE_TOKEN"];
     if (!string.IsNullOrWhiteSpace(token))
     {
         client.DefaultRequestHeaders.Authorization =

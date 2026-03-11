@@ -31,7 +31,11 @@ To use Hugging Face models in this project, you need an **API token**. Follow th
 
 5. Click **Generate**.
 
-6. **Copy the token** and replace it with "ApiToken" value in **backend/appsettings.json** file.
+6. **Copy the token** and export it to environment.
+
+```bash
+export HUGGINGFACE_TOKEN=your_token_here
+```
 
 #### Run backend service
 
