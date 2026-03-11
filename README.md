@@ -1,5 +1,7 @@
 # Fullstack application with .NET backend and Angular frontend
 
+<img src=UI.PNG alt="Swagger UI">
+
 ## Project description
 
 It is a fullstack application to create notes. Backend provides CRUD for creating, updating, deleting, generating summary and tags, and searching and sorting notes. Frontend executes creating, editing, deleting, and summary generation for notes.
