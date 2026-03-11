@@ -117,3 +117,13 @@ Services used:
 
 See `infra/template.yaml` for the full template.
 
+### Observability
+
+The backend uses OpenTelemetry for distributed tracing.
+
+Enabled instrumentation:
+- ASP.NET Core request tracing
+- HttpClient outgoing requests (including HuggingFace API calls)
+
+Exporter:
+- Console exporter for development
