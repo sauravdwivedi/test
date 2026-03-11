@@ -9,6 +9,14 @@
             </button>
         </div>
 
+        <!-- Form Modal -->
+        <div *ngIf="showForm()" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
+                <app-note-form [note]="selectedNote()" (saved)="onSaved()" (cancel)="closeForm()">
+                </app-note-form>
+            </div>
+        </div><br>
+
         <!-- Search & Sort -->
         <div class="flex flex-col sm:flex-row gap-4 mb-6">
             <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="onSearch()" placeholder="Search notes..."
@@ -47,13 +55,5 @@
                 </app-note-card>
             </div>
         </ng-template>
-    </div>
-
-    <!-- Form Modal -->
-    <div *ngIf="showForm()" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-        <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
-            <app-note-form [note]="selectedNote()" (saved)="onSaved()" (cancel)="closeForm()">
-            </app-note-form>
-        </div>
     </div>
 </div>
